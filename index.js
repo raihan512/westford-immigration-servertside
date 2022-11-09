@@ -18,6 +18,21 @@ app.get("/", (req, res) => {
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.e4yec41.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+async function mongodbOperation() {
+    try {
+        const serviceCollection = client.db("westfordDb").collection("services");
+
+        app.get("/services", async (req, res) => {
+            const query = {}
+            const cursor = serviceCollection.find(query);
+            const services = await cursor.toArray();
+            res.send(services);
+        })
+
+    }
+    finally { }
+}
+mongodbOperation().catch(error => console.error(error))
 app.listen(port, () => {
     console.log("Server is running");
 })
