@@ -60,6 +60,15 @@ async function mongodbOperation() {
             const cursor = reviewCollection.find(query);
             const reviews = await cursor.toArray();
             res.send(reviews);
+
+            // Delete a review
+            app.delete("/reviews/:id", async (req, res) => {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const review = await reviewCollection.deleteOne(query);
+                console.log(review);
+                res.send(review)
+            })
         })
     }
     finally { }
