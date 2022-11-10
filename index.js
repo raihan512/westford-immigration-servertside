@@ -45,9 +45,16 @@ async function mongodbOperation() {
         // Show Review for individual service
         app.get("/reviews", async (req, res) => {
             let query = {}
+            // Show reviews on service page
             if (req.query.serviceId) {
                 query = {
                     serviceId: req.query.serviceId
+                }
+            }
+            // Show an single users all reviews that he gave
+            else if (req.query.userEmail) {
+                query = {
+                    userEmail: req.query.userEmail
                 }
             }
             const cursor = reviewCollection.find(query);
