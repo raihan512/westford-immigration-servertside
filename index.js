@@ -29,6 +29,13 @@ async function mongodbOperation() {
             const services = await cursor.toArray();
             res.send(services);
         })
+        // Add Service
+        app.post("/services", async (req, res) => {
+            const service = req.body;
+            const addService = await serviceCollection.insertOne(service);
+            res.send(addService);
+            console.log(addService);
+        })
         // Load a single service from mongodb server
         app.get("/services/:id", async (req, res) => {
             const id = req.params.id;
@@ -36,11 +43,12 @@ async function mongodbOperation() {
             const service = await serviceCollection.findOne(query);
             res.send(service);
         })
-        // Set Review to the database
+        // ADD Review to the database
         app.post("/addreview", async (req, res) => {
             const review = req.body;
             const addReview = await reviewCollection.insertOne(review);
             res.send(addReview);
+            console.log(review);
         })
         // Show Review for individual service
         app.get("/reviews", async (req, res) => {
