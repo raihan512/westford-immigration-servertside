@@ -24,7 +24,7 @@ async function mongodbOperation() {
         // Load all services from mongodb server
         app.get("/services", async (req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const cursor = serviceCollection.find(query).sort({ _id: -1 });
             const services = await cursor.toArray();
             res.send(services);
         })
