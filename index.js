@@ -14,8 +14,8 @@ app.get("/", (req, res) => {
     res.send("Welcome to Westford Immigration")
 })
 
-
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.e4yec41.mongodb.net/?retryWrites=true&w=majority`;
+const uri = 'mongodb://localhost:27017'
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.e4yec41.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function mongodbOperation() {
@@ -34,7 +34,6 @@ async function mongodbOperation() {
             const service = req.body;
             const addService = await serviceCollection.insertOne(service);
             res.send(addService);
-            console.log(addService);
         })
         // Load a single service from mongodb server
         app.get("/services/:id", async (req, res) => {
@@ -44,11 +43,10 @@ async function mongodbOperation() {
             res.send(service);
         })
         // ADD Review to the database
-        app.post("/addreview", async (req, res) => {
+        app.post('/reviews', async (req, res) => {
             const review = req.body;
             const addReview = await reviewCollection.insertOne(review);
             res.send(addReview);
-            console.log(review);
         })
         // Show Review for individual service
         app.get("/reviews", async (req, res) => {
@@ -74,7 +72,6 @@ async function mongodbOperation() {
                 const id = req.params.id;
                 const query = { _id: ObjectId(id) };
                 const review = await reviewCollection.deleteOne(query);
-                console.log(review);
                 res.send(review)
             })
         })
